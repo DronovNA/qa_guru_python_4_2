@@ -1,27 +1,21 @@
+import pyautogui as pyautogui
 from selene.support.shared import browser
 from selene import be, have
 
 
-def test_simple():
-    assert 1 == 1, "Единица не должна быть равна двойке"
-
-
-
-browser.open('https://google.com')
-def test_search():
-
+def test_search(open_browser):
     browser.element('[name="q"]').should(be.blank).type('yashaka/selene').press_enter()
     browser.element('[id="search"]').should(have.text('Selene - User-oriented Web UI browser tests in Python'))
 
 
+def test_search_negative(open_browser):
+    browser.element('[name="q"]').should(be.blank).type('weiourjw[c577wc13@!#').press_enter()
+    browser.element('[class="card-section"]').should(have.text('По запросу weiourjw[c577wc13@!# ничего не найдено.'))
 
 
-browser.config.hold_browser_open = True
-
-browser.open('https://demoqa.com/automation-practice-form')
-browser.config.driver.maximize_window()
-
-def test_form():
+def test_form(open_browser_form):
+    pyautogui.click()
+    pyautogui.scroll(-1000)
     browser.element('[id="firstName"]').should(be.blank).type('Test').press_enter()
     browser.element('[id="lastName"]').should(be.blank).type('Testovich')
     browser.element('[id="userEmail"]').should(be.blank).type('Test@example.com')
@@ -39,4 +33,3 @@ def test_form():
     browser.element('//div[text()="Delhi"]').click()
     browser.element('#submit').submit()
     browser.element('[id="example-modal-sizes-title-lg"]').should(have.text('Thanks for submitting the form'))
-
